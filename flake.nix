@@ -15,8 +15,11 @@
     in
     {
       packages = forAllSystems (system:
-        let strata = (mkPkgs system).callPackage ./package.nix { };
-        in { inherit strata; default = strata; });
+        let
+          pkgs = mkPkgs system;
+          strata = pkgs.callPackage ./package.nix { };
+          strata-portal = pkgs.callPackage ./integration/portal-package.nix { inherit strata; };
+        in { inherit strata strata-portal; default = strata; });
 
       apps = forAllSystems (system:
         let strata = {
@@ -26,12 +29,24 @@
         };
         in { inherit strata; default = strata; });
 
+      nixosModules.strata = import ./modules/nixos.nix {
+        packageForSystem = system: self.packages.${system}.strata;
+      };
+      nixosModules.default = self.nixosModules.strata;
+
       overlays.default = final: _prev: {
         strata = final.callPackage ./package.nix { };
       };
 
-      checks = forAllSystems (system: {
-        inherit (self.packages.${system}.strata.passthru.tests) version packaging;
-      });
+      checks = forAllSystems (system:
+        let pkgs = mkPkgs system;
+        in {
+          inherit (self.packages.${system}.strata.passthru.tests) version packaging;
+        } // import ./tests/integration.nix {
+          inherit pkgs nixpkgs;
+          module = self.nixosModules.strata;
+          strata = self.packages.${system}.strata;
+          portal = self.packages.${system}.strata-portal;
+        });
     };
 }
