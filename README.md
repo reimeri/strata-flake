@@ -1,8 +1,8 @@
 # Strata for NixOS
 
 A reproducible source package of [Strata](https://github.com/lgse/strata)
-**v0.21.0**, pinned to release commit
-`870fec8e022ff8d29a5a5c1bf1174698bc0b6b09`. Nixpkgs is pinned in `flake.lock`;
+**v1.0.0**, pinned to release commit
+`0a086aa3bdb251842a1e8413e2a6b35970d0b409`. Nixpkgs is pinned in `flake.lock`;
 upstream source and Cargo dependencies have fixed hashes.
 
 Upstream's default **RAR support is enabled**. Strata itself is MIT-licensed,
@@ -167,7 +167,16 @@ may be disallowed there. It creates fixtures in a temporary directory and
 removes them afterward; it does not install Strata or change desktop settings.
 The full upstream GUI test suite is not run by this flake.
 
-Verified on this x86_64 NixOS workstation:
+Verified for **v1.0.0** on this x86_64 NixOS workstation:
+
+- Full release source build and both `nix flake check` package checks passed.
+- `nix run .#strata -- --version` returned `strata 1.0.0`.
+- Sandbox smoke tests passed for image/PDF thumbnails, audio waveform generation,
+  and streaming RAR extraction with the expected filename and content.
+- Both architecture outputs evaluated successfully; **aarch64 was not built**.
+- GUI startup and optional portal installation were not retested for v1.0.0.
+
+Previous v0.21.0 validation on this x86_64 NixOS workstation:
 
 - Full release source build and both `nix flake check` package checks passed.
 - `nix run .#strata -- --version` returned `strata 0.21.0`.

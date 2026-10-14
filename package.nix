@@ -38,17 +38,17 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "strata";
-  version = "0.21.0";
+  version = "1.0.0";
 
   src = fetchFromGitHub {
     owner = "lgse";
     repo = "strata";
-    # Commit underlying the annotated v0.21.0 tag.
-    rev = "870fec8e022ff8d29a5a5c1bf1174698bc0b6b09";
-    hash = "sha256-RSTEgtfDYYGxXef1J22NMGpmgjObg3T6APZqfSyfNPY=";
+    # Commit underlying the annotated v1.0.0 tag.
+    rev = "0a086aa3bdb251842a1e8413e2a6b35970d0b409";
+    hash = "sha256-dFNsFCnkeZs0VwmYRyu+6Jh8XxJzv+agUlP70Fdxa5Q=";
   };
 
-  cargoHash = "sha256-0nMfswOfyXiwIWF0Xne61jGwPdU/gMo6Wt6JGZEfrJw=";
+  cargoHash = "sha256-vuhHierqb4WsMdg890NpkaztYnfsnck2FxMz5cPMwCQ=";
 
   patches = [ ./patches/wrapper-aware-activation.patch ];
 
