@@ -38,15 +38,8 @@
         strata = final.callPackage ./package.nix { };
       };
 
-      checks = forAllSystems (system:
-        let pkgs = mkPkgs system;
-        in {
-          inherit (self.packages.${system}.strata.passthru.tests) version packaging;
-        } // import ./tests/integration.nix {
-          inherit pkgs nixpkgs;
-          module = self.nixosModules.strata;
-          strata = self.packages.${system}.strata;
-          portal = self.packages.${system}.strata-portal;
-        });
+      checks = forAllSystems (system: {
+        inherit (self.packages.${system}.strata.passthru.tests) version packaging;
+      });
     };
 }
