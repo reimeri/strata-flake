@@ -50,6 +50,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-vuhHierqb4WsMdg890NpkaztYnfsnck2FxMz5cPMwCQ=";
 
+  # Reduce build time while retaining release optimizations.
+  CARGO_PROFILE_RELEASE_LTO = "thin";
+  CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "16";
+
   patches = [ ./patches/wrapper-aware-activation.patch ];
 
   nativeBuildInputs = [ pkg-config wrapGAppsHook4 glib ];
