@@ -52,7 +52,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   # Reduce build time while retaining release optimizations.
   CARGO_PROFILE_RELEASE_LTO = "thin";
-  CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "16";
+
+  preBuild = ''
+    # stdenv resolves NIX_BUILD_CORES, including automatic CPU detection.
+    export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="$NIX_BUILD_CORES"
+  '';
 
   patches = [ ./patches/wrapper-aware-activation.patch ];
 
