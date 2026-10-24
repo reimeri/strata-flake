@@ -38,17 +38,17 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "strata";
-  version = "1.0.0";
+  version = "1.1.0";
 
   src = fetchFromGitHub {
     owner = "lgse";
     repo = "strata";
-    # Commit underlying the annotated v1.0.0 tag.
-    rev = "0a086aa3bdb251842a1e8413e2a6b35970d0b409";
-    hash = "sha256-dFNsFCnkeZs0VwmYRyu+6Jh8XxJzv+agUlP70Fdxa5Q=";
+    # Commit underlying the annotated v1.1.0 tag.
+    rev = "4b9a6ace71017888b3a2124d7d911c5c664cc767";
+    hash = "sha256-FoYYsjvWY+1SuZtvxancdVR6h7iFmnbtHXW2eTlVCJI=";
   };
 
-  cargoHash = "sha256-vuhHierqb4WsMdg890NpkaztYnfsnck2FxMz5cPMwCQ=";
+  cargoHash = "sha256-U52ypUksrz/2G8apmyh7x9c+47ZBStT1lHIWso7KfU4=";
 
   # Reduce build time while retaining release optimizations.
   CARGO_PROFILE_RELEASE_LTO = "thin";
@@ -80,14 +80,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
   STRATA_SANDBOX_PRLIMIT = "${lib.getBin util-linux}/bin/prlimit";
   STRATA_SANDBOX_GDK_PIXBUF_MODULE_FILE = "${gdk-pixbuf}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache";
 
-  postPatch = ''
-    # Upstream deliberately ignores PATH when looking up trusted host tools.
-    # Keep its NixOS setuid-wrapper precedence; append immutable store paths.
-    substituteInPlace src/trusted_command.rs \
-      --replace-fail '    "/run/current-system/profile/bin",' \
-        '    "/run/current-system/profile/bin",
-${lib.concatMapStringsSep "\n" (pkg: "    \"${lib.getBin pkg}/bin\",") trustedTools}'
-  '';
+  # Upstream deliberately ignores PATH when looking up trusted host tools.
+  # Its fixed roots keep NixOS setuid-wrapper precedence over these store paths.
+  STRATA_TRUSTED_COMMAND_PATH = lib.makeBinPath trustedTools;
 
   preFixup = ''
     gappsWrapperArgs+=(--prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${lib.makeSearchPath "lib/gstreamer-1.0" gstPlugins}")
