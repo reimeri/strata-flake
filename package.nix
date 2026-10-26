@@ -38,17 +38,17 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "strata";
-  version = "1.1.0";
+  version = "1.1.1";
 
   src = fetchFromGitHub {
     owner = "lgse";
     repo = "strata";
-    # Commit underlying the annotated v1.1.0 tag.
-    rev = "4b9a6ace71017888b3a2124d7d911c5c664cc767";
-    hash = "sha256-FoYYsjvWY+1SuZtvxancdVR6h7iFmnbtHXW2eTlVCJI=";
+    # Commit underlying the annotated v1.1.1 tag.
+    rev = "be3343a5992a2a5497b1a2ee7faa525be18e988f";
+    hash = "sha256-mWFYDKlVR6/LytRBGmgZlWX70N+Qlt3Ev5W5TmJ8UdE=";
   };
 
-  cargoHash = "sha256-U52ypUksrz/2G8apmyh7x9c+47ZBStT1lHIWso7KfU4=";
+  cargoHash = "sha256-+8Ztfdf/523VTH4nozy9b5Fde+GTk0xWRMbBUBA5rKs=";
 
   # Reduce build time while retaining release optimizations.
   CARGO_PROFILE_RELEASE_LTO = "thin";

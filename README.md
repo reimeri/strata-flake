@@ -1,6 +1,6 @@
 # Strata for NixOS
 
-A flake packaging [Strata](https://github.com/lgse/strata) **v1.1.0** for
+A flake packaging [Strata](https://github.com/lgse/strata) **v1.1.1** for
 `x86_64-linux` and `aarch64-linux`. Requires Nix with flakes enabled and a
 graphical session with session D-Bus.
 
